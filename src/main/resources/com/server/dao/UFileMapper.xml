@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:填写映射当前的Mapper接口，所有的增删改查的参数和返回值类型，
+		就可以直接填写缩写，不区分大小写，直接通过方法名去找类型-->
+<mapper namespace="com.server.dao.UFileMapper">
+
+    <insert id="insertUploadFile" parameterType="com.server.entity.UFile">
+        INSERT INTO a_file
+        (id, filename, realname, userid, createtime)
+        VALUES
+        (#{id}, #{fileName}, #{realName}, #{userId} ,#{createTime})
+    </insert>
+
+    <select id="findFileByUserId" resultType="com.server.entity.UFile">
+        SELECT
+        A.id as id,
+        A.filename as fileName,
+        A.realname as realName,
+        A.userid as userId,
+        A.createtime as createTime,
+        B.username as userName
+        FROM
+        a_file A
+        LEFT JOIN
+        a_user B
+        ON
+        A.userid = B.userid
+        WHERE
+        A.userid = #{userId}
+        ORDER BY
+        A.createtime asc
+        LIMIT
+        #{curPage} , #{pageSize}
+    </select>
+
+    <select id="findAllSize" resultType="java.lang.Integer">
+        SELECT COUNT(id) FROM a_file WHERE userid = #{userId}
+    </select>
+
+    <delete id="deleteFileById" parameterType="java.lang.String">
+        delete from a_file where id = #{id}
+    </delete>
+
+    <delete id="deleteAllFileByUserId" parameterType="java.lang.String">
+        delete from a_file where userid = #{userId}
+    </delete>
+
+    <select id="findFileById" resultType="com.server.entity.UFile">
+        SELECT
+        id as id, filename as fileName, realname as realName, userid as userId, createtime as createTime
+        FROM
+        a_file
+        WHERE
+        id = #{id}
+    </select>
+
+
+    <select id="findAllFileByUserId" resultType="com.server.entity.UFile">
+        SELECT
+        id as id, filename as fileName, realname as realName, userid as userId, createtime as createTime
+        FROM
+        a_file
+        WHERE
+        userid = #{userId}
+    </select>
+
+</mapper>

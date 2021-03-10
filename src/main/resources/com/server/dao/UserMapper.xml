@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:填写映射当前的Mapper接口，所有的增删改查的参数和返回值类型，
+		就可以直接填写缩写，不区分大小写，直接通过方法名去找类型-->
+<mapper namespace="com.server.dao.UserMapper">
+    <select id="findUserByNameAndPasswd" resultType="com.server.entity.User">
+        select
+            userid as userId, username as userName, password as passWord, email as email
+        from
+            a_user
+        where
+            username = #{user_name} and password = #{user_password}
+    </select>
+
+    <select id="findUserByName" resultType="com.server.entity.User">
+        select
+            userid as userId, username as userName, password as passWord, email as email
+        from
+            a_user
+        where
+            username = #{user_name}
+    </select>
+
+    <insert id="insertUser" parameterType="com.server.entity.User">
+        INSERT INTO
+            a_user
+                (userid, username, password, email)
+            VALUES
+                (#{userId}, #{userName}, #{passWord}, #{email})
+    </insert>
+
+</mapper>

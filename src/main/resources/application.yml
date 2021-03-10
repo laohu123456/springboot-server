@@ -1,0 +1,28 @@
+server:
+  port: 8081
+  tomcat:
+    threads:
+      max: 1000
+    max-connections: 20000
+
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    data-username: root
+    data-password: 123456
+    url: jdbc:mysql://192.168.56.101:3306/aaa
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    database: 0
+    host: 192.168.56.101
+    port: 6379
+    password: redis123
+    jedis:
+      pool:
+        max-active: 200
+        max-wait: -1
+        max-idle: 60
+        min-idle: 0
+    lettuce:
+      shutdown-timeout: 10000
