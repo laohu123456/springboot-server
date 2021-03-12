@@ -1,9 +1,11 @@
 package com.server.controller;
 
 import com.server.annotation.RemoveUserId;
+import com.server.entity.MainInfo;
 import com.server.entity.UFile;
 import com.server.service.OtherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,8 +54,8 @@ public class OtherController {
 
     @RemoveUserId
     @RequestMapping(value = "receiveMessage")
-    public Map<String, Object> receiveMessage(){
-        return otherService.receiveMessage();
+    public Map<String, Object> receiveMessage(@RequestBody MainInfo mainInfo){
+        return otherService.receiveMessage(mainInfo);
     }
 
 

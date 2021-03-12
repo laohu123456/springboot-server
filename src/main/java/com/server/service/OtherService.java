@@ -1,5 +1,6 @@
 package com.server.service;
 
+import com.server.entity.MainInfo;
 import com.server.entity.UFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,5 +21,5 @@ public interface OtherService {
     Map<String, Object> downLoadFile(String uuid, HttpServletResponse response);
 
 
-    Map<String, Object> receiveMessage();
+    Map<String, Object> receiveMessage(MainInfo mainInfo);
 }

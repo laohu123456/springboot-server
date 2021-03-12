@@ -29,9 +29,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "rejisterUser")
-    public Map<String, Object> rejisterUser(@RequestParam("username") String username,
-                                            @RequestParam("password") String password){
-        return userService.rejisterUser(username, password);
+    public Map<String, Object> rejisterUser(@RequestParam("register_name") String register_name,
+                                            @RequestParam("register_password") String register_password,
+                                            @RequestParam("register_email") String register_email){
+        return userService.rejisterUser(register_name, register_password, register_email);
     }
 
 }

@@ -152,18 +152,10 @@ public class OtherServiceImpl implements OtherService {
 
 
     @Override
-    public Map<String, Object> receiveMessage() {
+    public Map<String, Object> receiveMessage(MainInfo mainInfo) {
         Map<String, Object> map = new HashMap<>();
         try{
             //String message, String host, Integer port, String uri
-            MainInfo mainInfo = new MainInfo();
-            mainInfo.setSendEmailAccount("h@hyq.a");
-            mainInfo.setSendEmailPassword("h");
-            mainInfo.setReceiveMailAccount("q@hyq.a");
-            mainInfo.setSendPersonName("H");
-            mainInfo.setReceivePersonName("q");
-            mainInfo.setMailTitle("rabbitmq send email");
-            mainInfo.setMailContent("这里是第一封rabbitmq转发的邮件");
             ObjectMapper objectMapper = new ObjectMapper();
             String mainInfoMessage = objectMapper.writeValueAsString(mainInfo);
             HttpResponseEntity httpResponseEntity = HttpClientUtils.post_init("localhost", 8091, "/provider/receiveMessage", "json", mainInfoMessage);

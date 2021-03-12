@@ -12,5 +12,5 @@ public interface UserService {
 
     ExceptionEntity oauthUser(String token);
 
-    Map<String, Object> rejisterUser(String username, String password);
+    Map<String, Object> rejisterUser(String username, String password, String useremail);
 }

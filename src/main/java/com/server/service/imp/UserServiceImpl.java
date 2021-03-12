@@ -1,13 +1,17 @@
 package com.server.service.imp;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.config.LocalSession;
 import com.server.constant.CommonConstant;
 import com.server.dao.UserMapper;
 import com.server.entity.ExceptionEntity;
+import com.server.entity.HttpResponseEntity;
+import com.server.entity.MainInfo;
 import com.server.entity.User;
 import com.server.redis.servcie.RedisStringService;
 import com.server.service.UserService;
 import com.server.utils.GetRedisKey;
+import com.server.utils.HttpClientUtils;
 import com.server.utils.JwtUtils;
 import com.server.utils.OtherUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,26 +98,49 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public Map<String, Object> rejisterUser(String username, String password) {
+    public Map<String, Object> rejisterUser(String username, String password, String useremail) {
         Map<String, Object> map = new HashMap<>();
-        String uuid = OtherUtils.getUUID();
-        User user1 = userMapper.findUserByName(username);
-        if(user1 == null){
+        try{
+            String uuid = OtherUtils.getUUID();
+            User user1 = userMapper.findUserByName(username);
+            if(user1 != null){
+                map.put("code", 500);
+                map.put("message", "用户名已存在");
+                return map;
+            }
+            User user = new User();
+            user.setUserId(uuid);
+            user.setUserName(username);
+            user.setPassWord(password);
+            user.setEmail(useremail);
+            int success = userMapper.insertUser(user);
+            if(success > 0){
+                MainInfo mainInfo = new MainInfo();
+                mainInfo.setSendEmailAccount(CommonConstant.getSendEmailAdmin());
+                mainInfo.setSendEmailPassword(CommonConstant.getSendEmailAdminPassword());
+                mainInfo.setReceiveMailAccount(useremail);
+                mainInfo.setSendPersonName("管理员");
+                mainInfo.setReceivePersonName(username);
+                mainInfo.setMailTitle("欢迎注册");
+                mainInfo.setMailContent("恭喜您注册成功！");
+                ObjectMapper objectMapper = new ObjectMapper();
+                String mainInfoMessage = objectMapper.writeValueAsString(mainInfo);
+                HttpResponseEntity httpResponseEntity = HttpClientUtils.post_init("localhost", 8091, "/provider/receiveMessage", "json", mainInfoMessage);
+                Integer code = httpResponseEntity.getCode();
+                if(code == 200){
+                    map.put("message", "注册成功");
+                }else{
+                    map.put("message", "注册失败");
+                }
+                map.put("code", code);
+            }else{
+                map.put("code", 500);
+                map.put("message", "注册失败");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
             map.put("code", 500);
-            map.put("message", "用户名已存在");
-            return map;
-        }
-        User user = new User();
-        user.setUserId(uuid);
-        user.setUserName(username);
-        user.setPassWord(password);
-        int success = userMapper.insertUser(user);
-        if(success > 0){
-            map.put("code", 200);
-            map.put("message", "注册成功");
-        }else{
-            map.put("code", 500);
-            map.put("message", "注册失败");
+            map.put("message", "系统异常");
         }
         return map;
     }

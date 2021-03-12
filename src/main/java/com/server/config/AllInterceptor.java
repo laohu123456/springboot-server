@@ -2,6 +2,7 @@ package com.server.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.entity.ExceptionEntity;
+import com.server.redis.servcie.RedisSetService;
 import com.server.service.UserService;
 import com.server.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,22 +18,18 @@ import java.io.PrintWriter;
 @Component
 public class AllInterceptor implements HandlerInterceptor {
 
-    private final static String USER_LOGIN_PATH = "/user/login";
-
-    private final static String SEND_EMAIL_PATH = "/other/receiveMessage";
-
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RedisSetService redisSetService;
 
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //防盗刷 - redis限流、JWT验证(JWT续租)、参数校验
         String requestURI = request.getRequestURI();
-        if (USER_LOGIN_PATH.equals(requestURI)) {
-            return true;
-        }
-        if (SEND_EMAIL_PATH.equals(requestURI)) {
+        if (allowVisit(requestURI)) {
             return true;
         }
         String token = request.getHeader(JwtUtils.TOKEN_HEADER);
@@ -60,6 +57,10 @@ public class AllInterceptor implements HandlerInterceptor {
         PrintWriter writer = response.getWriter();
         ObjectMapper objectMapper = new ObjectMapper();
         writer.println(objectMapper.writeValueAsString(exceptionEntity));
+    }
+
+    private boolean allowVisit(String uri){
+        return redisSetService.findExist(uri);
     }
 
 
