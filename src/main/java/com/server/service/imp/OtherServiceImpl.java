@@ -3,7 +3,10 @@ package com.server.service.imp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.config.CommonUtils;
 import com.server.config.LocalSession;
+import com.server.config.ThreadPool;
+import com.server.dao.EmailUserMapper;
 import com.server.dao.UFileMapper;
+import com.server.entity.EmailUser;
 import com.server.entity.HttpResponseEntity;
 import com.server.entity.MainInfo;
 import com.server.entity.UFile;
@@ -22,6 +25,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
 @Service
 public class OtherServiceImpl implements OtherService {
@@ -31,6 +36,9 @@ public class OtherServiceImpl implements OtherService {
 
     @Autowired
     private CommonUtils commonUtils;
+
+    @Autowired
+    private EmailUserMapper emailUserMapper;
 
     @Transactional
     @Override
@@ -168,4 +176,46 @@ public class OtherServiceImpl implements OtherService {
         }
         return map;
     }
+
+    @Transactional
+    @Override
+    public Map<String, Object> createEamilUser(String email_name, String eamil_password) {
+        Map<String, Object> map = new HashMap<>();
+        try{
+            EmailUser emailByName = emailUserMapper.findEmailByName(email_name);
+            if(emailByName != null){
+                map.put("code", 500);
+                map.put("message", "邮箱已经存在!");
+                return map;
+            }
+            boolean ifSuccess = emailUserMapper.insertPojo(new EmailUser(email_name, eamil_password)) > 0 ? true : false;
+            if(ifSuccess){
+                map.put("code", 200);
+                map.put("message", "添加成功");
+                FutureTask future = new FutureTask(new Callable() {
+                    @Override
+                    public Object call() throws Exception {
+                        Map<String, String> param_map = new HashMap<>();
+                        param_map.put("name", email_name);
+                        param_map.put("password", eamil_password);
+                        HttpResponseEntity httpResponseEntity = HttpClientUtils.post_init("192.168.56.106",
+                                9000,
+                                "/utils/createUser",
+                                param_map);
+                        return null;
+                    }
+                });
+                ThreadPool.threadPoolExecutor.submit(future);
+            }else{
+                map.put("code", 500);
+                map.put("message", "添加失败");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            map.put("code", 500);
+            map.put("message", "系统异常");
+        }
+        return map;
+    }
+
 }

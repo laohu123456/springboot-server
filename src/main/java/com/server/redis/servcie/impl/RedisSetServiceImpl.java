@@ -23,6 +23,7 @@ public class RedisSetServiceImpl implements RedisSetService {
 
     @Override
     public void insertZset() {
+        redisTemplate.delete(CommonConstant.getNotLoginAllowPath());
         List<String> interceptorPath = pathMapper.findInterceptorPath();
         SetOperations setOperations = redisTemplate.opsForSet();
         for(String string:interceptorPath){

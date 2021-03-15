@@ -29,7 +29,8 @@ public class AllInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //防盗刷 - redis限流、JWT验证(JWT续租)、参数校验
         String requestURI = request.getRequestURI();
-        if (allowVisit(requestURI)) {
+        boolean allow = allowVisit(requestURI);
+        if (allow) {
             return true;
         }
         String token = request.getHeader(JwtUtils.TOKEN_HEADER);

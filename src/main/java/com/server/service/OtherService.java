@@ -22,4 +22,6 @@ public interface OtherService {
 
 
     Map<String, Object> receiveMessage(MainInfo mainInfo);
+
+    Map<String, Object> createEamilUser(String email_name, String eamil_password);
 }

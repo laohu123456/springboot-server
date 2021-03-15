@@ -58,5 +58,10 @@ public class OtherController {
         return otherService.receiveMessage(mainInfo);
     }
 
+    @RequestMapping(value = "createEamilUser")
+    public Map<String, Object> createEamilUser(@RequestParam("email_name") String email_name,
+                                               @RequestParam("eamil_password") String eamil_password){
+        return otherService.createEamilUser(email_name, eamil_password);
+    }
 
 }
