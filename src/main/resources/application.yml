@@ -5,6 +5,13 @@ server:
       max: 1000
     max-connections: 20000
 
+slave:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    data-username: root
+    data-password: 123456
+    url: jdbc:mysql://192.168.56.104:3306/aaa
+    type: com.alibaba.druid.pool.DruidDataSource
 
 spring:
   datasource:

@@ -1,4 +1,4 @@
-package com.server.config;
+package com.server.config.DynamicDateSource;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
 
 @ConfigurationProperties(prefix = "spring.datasource")
 @Configuration
-public class DruidConfig {
+@Primary
+public class DruidMasterConfig {
 
     @Value("${spring.datasource.driver-class-name}")
     private String driverClassName;
@@ -26,7 +28,7 @@ public class DruidConfig {
     @Value("${spring.datasource.data-password}")
     private String password;
 
-    @Bean(value = "druidDataSource")
+    @Bean("druidDataSourceMaster")
     public DataSource druidDataSource() {
         DruidDataSource druidDataSource = new DruidDataSource();
         druidDataSource.setDriverClassName(this.driverClassName);
@@ -52,7 +54,7 @@ public class DruidConfig {
     }
 
     @Bean
-    public SqlSessionFactoryBean getConnect(@Qualifier("druidDataSource") DataSource druidDataSource) {
+    public SqlSessionFactoryBean getMasterConnect(@Qualifier("druidDataSourceMaster") DataSource druidDataSource) {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(druidDataSource);
         return sqlSessionFactoryBean;
