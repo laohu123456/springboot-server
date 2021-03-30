@@ -26,10 +26,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class HttpClientUtils {
 
@@ -240,8 +237,8 @@ public class HttpClientUtils {
     }
 
     public static void main(String[] args) throws IOException {
-        //HttpResponseEntity httpResponseEntity = HttpClientUtils.post_init("abc","localhost",8091,"/provider/sendMessage", "json");
-        //System.out.println(httpResponseEntity);
+        HttpResponseEntity httpResponseEntity = HttpClientUtils.post_init("localhost",8091,"/provider/sendMessage", "json","abc");
+        System.out.println(httpResponseEntity);
         /*Map<String, String> map = new HashMap<>();
         map.put("a", "Hello ");
         map.put("b", "World ");
