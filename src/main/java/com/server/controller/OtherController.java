@@ -4,6 +4,7 @@ import com.server.annotation.RemoveUserId;
 import com.server.entity.MainInfo;
 import com.server.entity.UFile;
 import com.server.service.OtherService;
+import com.server.service.PoiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +23,9 @@ public class OtherController {
 
     @Autowired
     private OtherService otherService;
+
+    @Autowired
+    private PoiService poiService;
 
     @RemoveUserId
     @RequestMapping(value = "uploadFile")
@@ -62,6 +67,13 @@ public class OtherController {
     public Map<String, Object> createEamilUser(@RequestParam("email_name") String email_name,
                                                @RequestParam("eamil_password") String eamil_password){
         return otherService.createEamilUser(email_name, eamil_password);
+    }
+
+
+
+    @RequestMapping(value = "createExcel")
+    public void createExcel() throws IOException {
+        poiService.writeExcel();
     }
 
 }
