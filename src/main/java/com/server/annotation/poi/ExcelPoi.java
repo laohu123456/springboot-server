@@ -13,6 +13,5 @@ public @interface ExcelPoi {
 
     int order();
 
-    String value() default "";
 
 }

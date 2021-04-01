@@ -6,19 +6,19 @@ import java.io.Serializable;
 
 public class Poi implements Serializable {
 
-    @ExcelPoi(name = "编号", require = true, order = 0, value = "id")
+    @ExcelPoi(name = "编号", require = true, order = 0)
     private String id;
 
-    @ExcelPoi(name = "用户名", require = true, order = 1, value = "name")
+    @ExcelPoi(name = "用户名", require = true, order = 1)
     private String name;
 
-    @ExcelPoi(name = "密码", require = true, order = 3, value = "password")
+    @ExcelPoi(name = "密码", require = true, order = 3)
     private String password;
 
-    @ExcelPoi(name = "备注", require = true, order = 2, value = "remark")
+    @ExcelPoi(name = "备注", require = true, order = 2)
     private String remark;
 
-    @ExcelPoi(name = "备注a", require = false, order = 5, value = "remarka")
+    @ExcelPoi(name = "备注a", require = false, order = 5)
     private String remarka;
 
     public String getId() {

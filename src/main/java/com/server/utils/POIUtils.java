@@ -1,56 +1,75 @@
 package com.server.utils;
 
 
-import com.server.entity.Poi;
+import com.server.annotation.poi.ExcelPoi;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.LinkedList;
 import java.util.List;
 
-public class POIUtils {
+public class POIUtils<T> {
 
-    public void createExcel(String[] header, List<Poi> list, String path, String sheetName) throws IOException {
+    public void createExcel(List<T> list, String path, String sheetName, List<Field> orderList) throws IOException {
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
 
         int listSize = list.size();
         if(listSize > 10000){
             int j = listSize / 10000;
             for (int i = 0; i < j; i++) {
-                create(header, list, hssfWorkbook, i, sheetName);
+                create(list, hssfWorkbook, i, sheetName, orderList);
             }
         }else{
-            create(header, list, hssfWorkbook, 0, sheetName);
+            create(list, hssfWorkbook, 0, sheetName, orderList);
         }
         FileOutputStream out = new FileOutputStream(path);
         hssfWorkbook.write(out);
         out.close();
     }
 
-    private void create(String[] header, List<Poi> list, HSSFWorkbook hssfWorkbook, int index ,String sheetName){
+    private void create(List<T> list, HSSFWorkbook hssfWorkbook, int index ,String sheetName, List<Field> orderList){
         HSSFSheet sheet = hssfWorkbook.createSheet();
-        createHeader(sheet, header);
-        createContent(sheet, list, header, index);
+        createHeader(sheet, orderList);
+        createContent(sheet, list, index, orderList);
         hssfWorkbook.setSheetName(index,sheetName + index);
     }
 
-    private void createHeader(HSSFSheet sheet, String[] header){
+    private void createHeader(HSSFSheet sheet, List<Field> orderList){
         HSSFRow row = sheet.createRow(0);
-        for (int i = 0; i < header.length; i++) {
-            row.createCell(i).setCellValue(header[i]);
+        int i = 0;
+        for(Field field:orderList){
+            row.createCell(i).setCellValue(field.getAnnotation(ExcelPoi.class).name());
+            i++;
         }
     }
 
-    private void createContent(HSSFSheet sheet, List<Poi> list, String[] header ,int index){
+    private void createContent(HSSFSheet sheet, List<T> list,int index, List<Field> orderList){
+        List<String> list1 = new LinkedList<>();
+        for(Field field:orderList){
+            list1.add(field.getName());
+        }
         int j = 0;
         for (int i = index * 10000; i < (index + 1) * 10000; i++) {
             HSSFRow row = sheet.createRow(j+1);
-            row.createCell(0).setCellValue(list.get(i).getId());
-            row.createCell(1).setCellValue(list.get(i).getName());
-            row.createCell(2).setCellValue(list.get(i).getPassword());
-            row.createCell(3).setCellValue(list.get(i).getRemark());
+            Field[] fields = list.get(i).getClass().getDeclaredFields();
+            Object poi = list.get(i);
+            for (int l = 0; l < fields.length; l++) {
+                try {
+                    if(!fields[l].isAccessible()){
+                        fields[l].setAccessible(true);
+                    }
+                    int index1 = list1.indexOf(fields[l].getName());
+                    if(index1 != -1){
+                        row.createCell(index1).setCellValue(String.valueOf(fields[l].get(poi)));
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
             j++;
         }
     }
