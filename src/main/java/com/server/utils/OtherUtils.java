@@ -41,7 +41,7 @@ public class OtherUtils {
         return counter;
     }
 
-    public static byte[][] serializeArray(String[] array) throws Exception {
+    public static byte[][] serializeArray(Object[] array) throws Exception {
         if(array == null){
             throw new Exception("Array is null");
         }

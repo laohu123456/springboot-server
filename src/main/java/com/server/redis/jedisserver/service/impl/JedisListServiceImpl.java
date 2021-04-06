@@ -50,7 +50,7 @@ public class JedisListServiceImpl implements JedisListService {
     }
 
     @Override
-    public Long linsert(String key,ListPosition listPosition, String tarSource, String value) {
+    public Long linsert(String key,ListPosition listPosition, String tarSource, Object value) {
         Jedis jedis = null;
         Long result = 0L;
         try{
@@ -179,7 +179,7 @@ public class JedisListServiceImpl implements JedisListService {
     }
 
     @Override
-    public String lset(String key, long index, String value) {
+    public String lset(String key, long index, Object value) {
         Jedis jedis = null;
         String result = null;
         try{

@@ -11,7 +11,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Order(value = Ordered.LOWEST_PRECEDENCE - 1 )
 public class findPath implements ApplicationRunner {
-
+    /**
+     * 加载此类应注意Springboot加载顺序,不注意的话可能导致无法注入
+     */
     @Autowired
     private RedisSetService redisSetService;
 

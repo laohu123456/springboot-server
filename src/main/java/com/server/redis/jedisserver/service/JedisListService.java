@@ -11,7 +11,7 @@ public interface JedisListService {
 
     public Long lpush(String key, Object object);
 
-    public Long linsert(String key, ListPosition listPosition, String tarSource, String value);
+    public Long linsert(String key, ListPosition listPosition, String tarSource, Object value);
 
     public List<String> lrange(String key, long start, long end);
 
@@ -27,7 +27,7 @@ public interface JedisListService {
 
     public String ltrim(String key, long start, long end);
 
-    public String lset(String key, long index, String value);
+    public String lset(String key, long index, Object value);
 
     public List<String> blpop(int timeout, List<String> list);
 

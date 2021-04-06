@@ -13,5 +13,7 @@ public @interface ExcelPoi {
 
     int order();
 
+    boolean combination() default false;
+
 
 }
