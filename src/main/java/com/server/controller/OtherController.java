@@ -3,6 +3,8 @@ package com.server.controller;
 import com.server.annotation.RemoveUserId;
 import com.server.entity.MainInfo;
 import com.server.entity.UFile;
+import com.server.redis.jedisserver.service.JedisStringService;
+import com.server.redis.jedisserver.service.JedisSystemService;
 import com.server.service.OtherService;
 import com.server.service.PoiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,10 +72,21 @@ public class OtherController {
     }
 
 
+    @Autowired
+    private JedisSystemService jedisSystemService;
+
+    @Autowired
+    private JedisStringService jedisStringService;
 
     @RequestMapping(value = "createExcel")
     public void createExcel() throws IOException {
-        poiService.writeExcel();
+        //poiService.writeExcel();
+        //jedisSystemService.scankey();
+        String[] msetArray = {"d1","a1","e1","f1"};
+        jedisStringService.addArray(msetArray);
+        String[] msetArray1 = {"d1","e1"};
+        List<String> values = jedisStringService.getValues(msetArray1);
+        System.out.println(values);
     }
 
 }

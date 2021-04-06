@@ -2,6 +2,7 @@ package com.server.redis.jedisserver.service.impl;
 
 import com.server.redis.jedisserver.config.JedisConfig;
 import com.server.redis.jedisserver.service.JedisStringService;
+import com.server.utils.OtherUtils;
 import com.server.utils.SerializationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,8 @@ public class JedisStringServiceImpl implements JedisStringService {
         String result = null;
         try{
             jedis = jedisConfig.getJedis();
-            result = jedis.mset(SerializationUtils.serialize(keyValues));
+            byte[][] key_Value = OtherUtils.serializeArray(keyValues);
+            result = jedis.mset(key_Value);
         }catch (Exception e){
             e.printStackTrace();
         }finally {
@@ -84,7 +86,8 @@ public class JedisStringServiceImpl implements JedisStringService {
         List<String> result = new ArrayList<>();
         try{
             jedis = jedisConfig.getJedis();
-            List<byte[]> list =  jedis.mget(SerializationUtils.serialize(keys));
+            byte[][] key = OtherUtils.serializeArray(keys);
+            List<byte[]> list =  jedis.mget(key);
             if(!CollectionUtils.isEmpty(list)){
                 for(byte[] bytes:list){
                     result.add(String.valueOf(SerializationUtils.deserialize(bytes)));

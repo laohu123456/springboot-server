@@ -53,13 +53,16 @@ public class PoiServcieImpl implements PoiService {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return list.stream().filter(field -> field.getAnnotation(ExcelPoi.class).require() == true)
+        return list.stream()
+                .filter(field -> field.getAnnotation(ExcelPoi.class).require())
                 .sorted(new Comparator<Field>() {
                     @Override
                     public int compare(Field o1, Field o2) {
                         return o1.getAnnotation(ExcelPoi.class).order() - o2.getAnnotation(ExcelPoi.class).order();
                     }
-                }).collect(Collectors.toList());
+                })
+                //.sorted((o1, o2) -> o1.getAnnotation(ExcelPoi.class).order() - o2.getAnnotation(ExcelPoi.class).order())
+                .collect(Collectors.toList());
     }
 
 }

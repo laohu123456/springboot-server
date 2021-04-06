@@ -40,4 +40,16 @@ public class OtherUtils {
         }
         return counter;
     }
+
+    public static byte[][] serializeArray(String[] array) throws Exception {
+        if(array == null){
+            throw new Exception("Array is null");
+        }
+        int length = array.length;
+        byte[][] bytes = new byte[length][];
+        for (int i = 0; i < length; i++) {
+            bytes[i] = SerializationUtils.serialize(array[i]);
+        }
+        return bytes;
+    }
 }

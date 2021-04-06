@@ -2,10 +2,13 @@ package com.server.redis.jedisserver.service.impl;
 
 import com.server.redis.jedisserver.config.JedisConfig;
 import com.server.redis.jedisserver.service.JedisSystemService;
+import com.server.utils.OtherUtils;
 import com.server.utils.SerializationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.ScanParams;
+import redis.clients.jedis.ScanResult;
 
 @Service
 public class JedisSystemServiceImpl implements JedisSystemService {
@@ -49,7 +52,8 @@ public class JedisSystemServiceImpl implements JedisSystemService {
         Long result = 0L;
         try{
             jedis = jedisConfig.getJedis();
-            result = jedis.del(SerializationUtils.serialize(keys));
+            byte[][] key = OtherUtils.serializeArray(keys);
+            result = jedis.del(SerializationUtils.serialize(key));
         }catch (Exception e){
             e.printStackTrace();
         }finally {
@@ -118,20 +122,33 @@ public class JedisSystemServiceImpl implements JedisSystemService {
         return result;
     }
 
-/*    @Override
+    @Override
     public void scankey() {
         Jedis jedis = null;
         String result = null;
         try{
             jedis = jedisConfig.getJedis();
-            result = jedis.sca
+            String start = String.valueOf(0);  //最开始的位置
+            getScanResult(jedis, start);
         }catch (Exception e){
             e.printStackTrace();
         }finally {
             jedisConfig.jedisClose(jedis);
         }
-        return result;
-    }*/
+       // return result;
+    }
+
+    private void getScanResult(Jedis jedis, String cursor){
+        ScanParams scanParams = new ScanParams();
+        scanParams.count(5);    //每次获取的key的个数
+        scanParams.match("list:*");  //匹配原则
+        ScanResult<String> scan = jedis.scan(cursor, scanParams);
+        System.out.println(scan.getCursor());   //游标停止在什么index
+        System.out.println(scan.getResult());   //结果集
+        if(!scan.getCursor().equals("0")){  //代表全部匹配完成
+            getScanResult(jedis, scan.getCursor());
+        }
+    }
 
     @Override
     public String bgsave() {

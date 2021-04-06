@@ -17,7 +17,7 @@ public interface JedisSystemService {
 
     public String randomkey();
 
-    //public void scankey();
+    public void scankey();
 
     public String bgsave();
 

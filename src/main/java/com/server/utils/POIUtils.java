@@ -5,6 +5,7 @@ import com.server.annotation.poi.ExcelPoi;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -74,6 +75,12 @@ public class POIUtils<T> {
         }
     }
 
+
+    private void hb(HSSFSheet sheet, int firstRow, int lastRow, int firstCol, int lastCol){
+        //合并日期占两行(4个参数，分别为起始行，结束行，起始列，结束列)
+        CellRangeAddress region = new CellRangeAddress(firstRow, lastRow, firstCol, lastCol);
+        sheet.addMergedRegion(region);
+    }
 
 
 }
