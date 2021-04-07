@@ -54,6 +54,7 @@ public class PoiServcieImpl implements PoiService {
             e.printStackTrace();
         }
         return list.stream()
+                .filter(field -> field.isAnnotationPresent(ExcelPoi.class))  //增加对未标注注解的属性进行排除,以前版本未标注的容易出现空指针异常
                 .filter(field -> field.getAnnotation(ExcelPoi.class).require())
                 .sorted(new Comparator<Field>() {
                     @Override

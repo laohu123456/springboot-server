@@ -21,6 +21,8 @@ public class Poi implements Serializable {
     @ExcelPoi(name = "备注a", require = false, order = 5)
     private String remarka;
 
+    private String aaa;
+
     public String getId() {
         return id;
     }

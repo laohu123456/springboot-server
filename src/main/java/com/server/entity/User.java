@@ -1,7 +1,10 @@
 package com.server.entity;
 
+import com.server.config.argsHandler.NeedArgsHandlerAll;
+
 import java.io.Serializable;
 
+@NeedArgsHandlerAll(ignoreFiled = {"email"})
 public class User implements Serializable {
 
     private static final long serialVersionUID = -2496349552074227566L;
