@@ -23,6 +23,7 @@ public class AllTypeImpl {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
         System.out.println("allTpye:" + method.getName());
+        System.out.println("测试");
     }
 
 }
