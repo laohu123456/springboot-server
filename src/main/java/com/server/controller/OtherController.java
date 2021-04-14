@@ -1,8 +1,10 @@
 package com.server.controller;
 
 import com.server.annotation.RemoveUserId;
-import com.server.config.argsHandler.NeedArgsHandler;
+import com.server.annotation.comoutingtime.AllType;
+import com.server.annotation.comoutingtime.CountTime;
 import com.server.entity.MainInfo;
+import com.server.entity.Poi;
 import com.server.entity.UFile;
 import com.server.entity.User;
 import com.server.redis.jedisserver.service.JedisStringService;
@@ -10,7 +12,10 @@ import com.server.redis.jedisserver.service.JedisSystemService;
 import com.server.service.OtherService;
 import com.server.service.PoiService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CountTime
 @RestController
 @RequestMapping(value = "other")
 public class OtherController {
@@ -89,13 +95,25 @@ public class OtherController {
        // System.out.println(values);
     }
 
-    @NeedArgsHandler(requestNeed = true, responseNeed = true)
+   // @GetPojo(className = User.class)
+   // @NeedArgsHandler(requestNeed = true, responseNeed = true)
     @RequestMapping(value = "testHandler")
-    public Map<String, Object> testHandler(@RequestBody(required = false) User user){
-        System.out.println(user);
+    public Map<String, Object> testHandler(@RequestBody(required = false) User user) throws InterruptedException {
+       // System.out.println(user);
         Map<String, Object> map = new HashMap<>();
         map.put("a","1");
         map.put("b","2");
+        Thread.sleep(3000L);
         return map;
     }
+
+
+    @RequestMapping(value = "producer")
+    public Map<String, Object> producer(@RequestParam("offestNum") Integer offestNum){
+        Map<String, Object> map = new HashMap<>();
+        List<Poi> producer = poiService.producer(offestNum);
+        map.put("data", producer);
+        return map;
+    }
+
 }

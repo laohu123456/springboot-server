@@ -66,4 +66,9 @@ public class PoiServcieImpl implements PoiService {
                 .collect(Collectors.toList());
     }
 
+
+    @Override
+    public List<Poi> producer(Integer offestNum) {
+        return poiMapper.producer(offestNum);
+    }
 }

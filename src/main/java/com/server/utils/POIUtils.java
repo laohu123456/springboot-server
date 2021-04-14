@@ -10,6 +10,8 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -80,6 +82,18 @@ public class POIUtils<T> {
         //合并日期占两行(4个参数，分别为起始行，结束行，起始列，结束列)
         CellRangeAddress region = new CellRangeAddress(firstRow, lastRow, firstCol, lastCol);
         sheet.addMergedRegion(region);
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+        Class<?> aClass = Class.forName("com.server.entity.User");
+        Field a = aClass.getDeclaredField("userId");
+        Object o = aClass.newInstance();
+        System.out.println(a);
+        Method setUserId = aClass.getDeclaredMethod("setUserId", String.class);
+        setUserId.invoke(o, "skfasjfsklajkfld");
+        Method getUserId = aClass.getDeclaredMethod("getUserId", null);
+        Object invoke = getUserId.invoke(o, null);
+        System.out.println(invoke);
     }
 
 

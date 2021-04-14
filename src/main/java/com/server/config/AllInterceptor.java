@@ -1,12 +1,14 @@
 package com.server.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.server.annotation.SkipTokenOauth;
 import com.server.entity.ExceptionEntity;
 import com.server.redis.servcie.RedisSetService;
 import com.server.service.UserService;
 import com.server.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Method;
 
 @Component
 public class AllInterceptor implements HandlerInterceptor {
@@ -64,5 +67,12 @@ public class AllInterceptor implements HandlerInterceptor {
         return redisSetService.findExist(uri);
     }
 
-
+    /**
+     * 标注 @SkipTokenOauth 可以直接跳过token认证
+     */
+    public boolean skipTokenOauth(Object handler){
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+        Method method = handlerMethod.getMethod();
+        return method.isAnnotationPresent(SkipTokenOauth.class);
+    }
 }

@@ -1,7 +1,10 @@
 package com.server.dao;
 
+import com.server.annotation.comoutingtime.Category;
+import com.server.annotation.comoutingtime.CountTime;
 import com.server.entity.Poi;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -14,5 +17,8 @@ public interface PoiMapper {
 
 
     int insertData(List<Poi> list);
+
+    @CountTime(category = Category.SQL)
+    List<Poi> producer(@Param("offestnum")Integer offestnum);
 
 }

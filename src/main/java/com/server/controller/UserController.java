@@ -1,5 +1,6 @@
 package com.server.controller;
 
+import com.server.annotation.comoutingtime.CountTime;
 import com.server.dao.UserMapper;
 import com.server.entity.ExceptionEntity;
 import com.server.entity.User;
@@ -23,6 +24,7 @@ public class UserController {
     private UserService userService;
 
 
+    @CountTime
     @RequestMapping(value = "login")
     public Map<String, Object> userLogin(@RequestParam(value = "user_name") String user_name,
                                          @RequestParam(value = "user_password") String user_password) {

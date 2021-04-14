@@ -15,4 +15,9 @@
         </foreach>
     </insert>
 
+    <!--调用存储模式-->
+    <select id="producer" resultType="com.server.entity.Poi">
+        {call finddata(#{offestnum,mode=IN})}
+    </select>
+
 </mapper>
