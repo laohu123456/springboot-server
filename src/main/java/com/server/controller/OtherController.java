@@ -1,8 +1,8 @@
 package com.server.controller;
 
 import com.server.annotation.RemoveUserId;
-import com.server.annotation.comoutingtime.AllType;
 import com.server.annotation.comoutingtime.CountTime;
+import com.server.annotation.test.GetPojo;
 import com.server.entity.MainInfo;
 import com.server.entity.Poi;
 import com.server.entity.UFile;
@@ -95,7 +95,7 @@ public class OtherController {
        // System.out.println(values);
     }
 
-   // @GetPojo(className = User.class)
+    @GetPojo(className = User.class)
    // @NeedArgsHandler(requestNeed = true, responseNeed = true)
     @RequestMapping(value = "testHandler")
     public Map<String, Object> testHandler(@RequestBody(required = false) User user) throws InterruptedException {
