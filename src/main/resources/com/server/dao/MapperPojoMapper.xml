@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:填写映射当前的Mapper接口，所有的增删改查的参数和返回值类型，
+		就可以直接填写缩写，不区分大小写，直接通过方法名去找类型-->
+<mapper namespace="com.server.dao.MapperPojoMapper">
+
+    <insert id="insert" parameterType="com.server.config.mybatisecret.MapperPojo">
+        insert into a_mapperpojo
+                (id, name, remark, address)
+        values
+                (#{id}, #{name}, #{remark}, #{address})
+    </insert>
+
+    <select id="findAll" resultType="com.server.config.mybatisecret.MapperPojo">
+        SELECT * FROM a_mapperpojo
+    </select>
+
+    <select id="findById" resultType="com.server.config.mybatisecret.MapperPojo">
+        SELECT * FROM a_mapperpojo where id = #{id}
+    </select>
+
+</mapper>

@@ -98,12 +98,11 @@ public class OtherController {
     @GetPojo(className = User.class)
    // @NeedArgsHandler(requestNeed = true, responseNeed = true)
     @RequestMapping(value = "testHandler")
-    public Map<String, Object> testHandler(@RequestBody(required = false) User user) throws InterruptedException {
+    public Map<String, Object> testHandler(@RequestBody(required = false) User user) {
        // System.out.println(user);
         Map<String, Object> map = new HashMap<>();
         map.put("a","1");
         map.put("b","2");
-        Thread.sleep(3000L);
         return map;
     }
 

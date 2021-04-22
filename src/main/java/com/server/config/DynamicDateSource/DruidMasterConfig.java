@@ -1,7 +1,9 @@
 package com.server.config.DynamicDateSource;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import org.apache.ibatis.plugin.Interceptor;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -15,6 +17,12 @@ import javax.sql.DataSource;
 @Configuration
 @Primary
 public class DruidMasterConfig {
+
+    /*
+        此处手动注入plugins
+     */
+    @Autowired
+    private Interceptor[] intercepts;
 
     @Value("${spring.datasource.driver-class-name}")
     private String driverClassName;
@@ -53,10 +61,12 @@ public class DruidMasterConfig {
         return druidDataSource;
     }
 
+
     @Bean
     public SqlSessionFactoryBean getMasterConnect(@Qualifier("druidDataSourceMaster") DataSource druidDataSource) {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(druidDataSource);
+        sqlSessionFactoryBean.setPlugins(intercepts);
         return sqlSessionFactoryBean;
     }
 

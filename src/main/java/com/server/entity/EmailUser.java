@@ -50,4 +50,6 @@ public class EmailUser implements Serializable {
                 ", emailPasswd='" + emailPasswd + '\'' +
                 '}';
     }
+
+
 }

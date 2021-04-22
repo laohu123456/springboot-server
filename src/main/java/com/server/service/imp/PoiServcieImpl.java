@@ -71,4 +71,7 @@ public class PoiServcieImpl implements PoiService {
     public List<Poi> producer(Integer offestNum) {
         return poiMapper.producer(offestNum);
     }
+
+
+
 }
