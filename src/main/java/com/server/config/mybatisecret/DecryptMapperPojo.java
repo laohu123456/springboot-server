@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 })
 public class DecryptMapperPojo implements Interceptor {
 
-    private static final String[] PERFIX = {"find", "query", "select"};
+    //private static final String[] PERFIX = {"find", "query", "select"};
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {

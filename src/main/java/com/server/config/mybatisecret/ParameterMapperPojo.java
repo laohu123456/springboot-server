@@ -3,7 +3,6 @@ package com.server.config.mybatisecret;
 import com.server.secret.Md5;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.plugin.*;
-import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
@@ -29,7 +28,7 @@ import java.util.Properties;
 )
 public class ParameterMapperPojo implements Interceptor {
 
-    private static final String[] PERFIX = {"insert", "update"};
+    //private static final String[] PERFIX = {"insert", "update"};
 
 
     @Override

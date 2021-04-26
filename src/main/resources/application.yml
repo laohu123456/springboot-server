@@ -33,3 +33,6 @@ spring:
         min-idle: 0
     lettuce:
       shutdown-timeout: 10000
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

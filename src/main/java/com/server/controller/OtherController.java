@@ -7,6 +7,7 @@ import com.server.entity.MainInfo;
 import com.server.entity.Poi;
 import com.server.entity.UFile;
 import com.server.entity.User;
+import com.server.redis.jedisserver.config.JedisConfig;
 import com.server.redis.jedisserver.service.JedisStringService;
 import com.server.redis.jedisserver.service.JedisSystemService;
 import com.server.service.OtherService;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Pipeline;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -84,15 +87,27 @@ public class OtherController {
     @Autowired
     private JedisStringService jedisStringService;
 
+    @Autowired
+    private JedisConfig jedisConfig;
+
     @RequestMapping(value = "createExcel")
     public void createExcel() throws IOException {
-        poiService.writeExcel();
+        //poiService.writeExcel();
         //jedisSystemService.scankey();
         //String[] msetArray = {"d1","a1","e1","f1"};
         //jedisStringService.addArray(msetArray);
        // String[] msetArray1 = {"d1","e1"};
        // List<String> values = jedisStringService.getValues(msetArray1);
        // System.out.println(values);
+        Jedis jedis = null;
+        try {
+            jedis = jedisConfig.getJedis();
+            Pipeline pipelined = jedis.pipelined();  //适用批量操作
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            jedisConfig.jedisClose(jedis);
+        }
     }
 
     @GetPojo(className = User.class)
