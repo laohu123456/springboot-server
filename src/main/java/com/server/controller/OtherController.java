@@ -10,6 +10,7 @@ import com.server.entity.User;
 import com.server.redis.jedisserver.config.JedisConfig;
 import com.server.redis.jedisserver.service.JedisStringService;
 import com.server.redis.jedisserver.service.JedisSystemService;
+import com.server.redis.lock.RedisLockAnnotation;
 import com.server.service.OtherService;
 import com.server.service.PoiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,6 +129,12 @@ public class OtherController {
         List<Poi> producer = poiService.producer(offestNum);
         map.put("data", producer);
         return map;
+    }
+
+    @RedisLockAnnotation
+    @RequestMapping(value = "getResult")
+    public String getResult(@RequestParam String value){
+        return value;
     }
 
 }

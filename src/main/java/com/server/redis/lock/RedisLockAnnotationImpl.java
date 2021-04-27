@@ -1,5 +1,6 @@
 package com.server.redis.lock;
 
+import com.server.config.AllException;
 import com.server.redis.jedisserver.config.JedisConfig;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -21,12 +22,13 @@ public class RedisLockAnnotationImpl {
     public void redisLockAnnotationImpl(){}
 
     @Before("redisLockAnnotationImpl()")
-    public void before(JoinPoint joinPoint){
+    public void before(JoinPoint joinPoint) throws AllException {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
         RedisLockAnnotation annotation = method.getAnnotation(RedisLockAnnotation.class);
         int expireTime = annotation.expireTime();
         String key = annotation.key();
+        throw  new AllException(500,"服务器异常");
 
     }
 
