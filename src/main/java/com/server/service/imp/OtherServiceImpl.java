@@ -6,10 +6,7 @@ import com.server.config.LocalSession;
 import com.server.config.ThreadPool;
 import com.server.dao.EmailUserMapper;
 import com.server.dao.UFileMapper;
-import com.server.entity.EmailUser;
-import com.server.entity.HttpResponseEntity;
-import com.server.entity.MainInfo;
-import com.server.entity.UFile;
+import com.server.entity.*;
 import com.server.service.OtherService;
 import com.server.utils.DateUtils;
 import com.server.utils.FtpUtils;
@@ -217,5 +214,5 @@ public class OtherServiceImpl implements OtherService {
         }
         return map;
     }
-
+    
 }

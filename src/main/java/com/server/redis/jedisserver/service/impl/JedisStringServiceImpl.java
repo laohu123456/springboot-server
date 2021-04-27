@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import redis.clients.jedis.Jedis;
-import sun.misc.PostVMInitHook;
 
 import java.util.ArrayList;
 import java.util.List;

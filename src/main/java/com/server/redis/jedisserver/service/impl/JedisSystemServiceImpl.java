@@ -128,7 +128,7 @@ public class JedisSystemServiceImpl implements JedisSystemService {
         String result = null;
         try{
             jedis = jedisConfig.getJedis();
-            String start = String.valueOf(0);  //最开始的位置
+            int start = 0;  //最开始的位置
             getScanResult(jedis, start);
         }catch (Exception e){
             e.printStackTrace();
@@ -138,14 +138,14 @@ public class JedisSystemServiceImpl implements JedisSystemService {
        // return result;
     }
 
-    private void getScanResult(Jedis jedis, String cursor){
+    private void getScanResult(Jedis jedis, int cursor){
         ScanParams scanParams = new ScanParams();
         scanParams.count(5);    //每次获取的key的个数
         scanParams.match("list:*");  //匹配原则
         ScanResult<String> scan = jedis.scan(cursor, scanParams);
         System.out.println(scan.getCursor());   //游标停止在什么index
         System.out.println(scan.getResult());   //结果集
-        if(!scan.getCursor().equals("0")){  //代表全部匹配完成
+        if(scan.getCursor() != 0){  //代表全部匹配完成
             getScanResult(jedis, scan.getCursor());
         }
     }

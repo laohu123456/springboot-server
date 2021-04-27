@@ -6,8 +6,8 @@ import com.server.utils.SerializationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import redis.clients.jedis.BinaryClient;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.ListPosition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,7 @@ public class JedisListServiceImpl implements JedisListService {
     }
 
     @Override
-    public Long linsert(String key,ListPosition listPosition, String tarSource, Object value) {
+    public Long linsert(String key, BinaryClient.LIST_POSITION listPosition, String tarSource, Object value) {
         Jedis jedis = null;
         Long result = 0L;
         try{
