@@ -164,4 +164,26 @@ public class JedisSystemServiceImpl implements JedisSystemService {
         }
         return result;
     }
+
+    /**
+     * bitmap
+     * setbit
+     * getbit
+     * bitcount
+     * 需要查看详细信心就bitmap,hyperloglog无法查看具体信息且含有误差
+     * hyperloglog
+     * pfadd
+     * pfcount
+     * pfmerge
+     */
+    public void  bitmap(){
+        Jedis jedis = null;
+        try{
+            jedis = jedisConfig.getJedis();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            jedisConfig.jedisClose(jedis);
+        }
+    }
 }
