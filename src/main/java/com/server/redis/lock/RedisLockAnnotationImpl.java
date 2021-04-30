@@ -15,6 +15,18 @@ import java.lang.reflect.Method;
 @Aspect
 public class RedisLockAnnotationImpl {
 
+
+    /**
+     * 待考量
+     * 利用全局异常捕获，判断是否获取锁成功,获取不成成功抛出异常 throw new AllException(500,"获取资源失败");
+     *
+     * @Before 加锁  一定要设置过期时间 并且开始 另外线程开始续租工作
+     * @After 释放锁
+     * @AfterThrowing  系统异常释放锁
+     */
+
+
+
     @Autowired
     private JedisConfig jedisConfig;
 
