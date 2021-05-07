@@ -24,7 +24,6 @@ public class DecryptMapperPojo implements Interceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
-        System.out.println("解密");
         Object proceed = invocation.proceed();
         if(proceed == null){
             return proceed;

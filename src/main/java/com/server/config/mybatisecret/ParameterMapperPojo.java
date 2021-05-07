@@ -19,12 +19,22 @@ import java.util.Properties;
  * type 属性指定当前拦截器使用StatementHandler 、ResultSetHandler、ParameterHandler，Executor的一种
  * method 属性指定使用以上四种类型的具体方法（可进入class内部查看其方法）。
  * args 属性指定预编译语句
+ *
+ * 拦截执行器的方法 Executor.class (update, query, flushStatements, commit, rollback, getTransaction, close, isClosed)
+ * 拦截参数的处理 ParameterHandler.class (getParameterObject, setParameters)
+ * 拦截结果集的处理 ResultSetHandler.class (handleResultSets, handleOutputParameters)
+ * 拦截Sql语法构建的处理 StatementHandler.class (prepare, parameterize, batch, update, query)
  */
+
 @Component
 @Intercepts(
         @Signature(type = ParameterHandler.class
                 , method = "setParameters"
-                , args = PreparedStatement.class)
+                , args = {PreparedStatement.class})
+
+        /*@Signature(type = Executor.class
+        , method = "setParameters"
+        , args = {PreparedStatement.class})*/
 )
 public class ParameterMapperPojo implements Interceptor {
 
@@ -33,9 +43,6 @@ public class ParameterMapperPojo implements Interceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
-        System.out.println("加密");
-
-
         ParameterHandler parameterHandler = (ParameterHandler)invocation.getTarget();
         /**
          * {@link DefaultParameterHandler}
@@ -47,7 +54,7 @@ public class ParameterMapperPojo implements Interceptor {
         //get方法是返回参数对象的值
         Object o = parameterObject.get(parameterHandler);
         if(o != null){
-            Class<?> aClass = o.getClass();
+            Class<?> aClass = o.getClass();  //获取参数类型 --> 实体类型MapperPojo
             boolean annotationPresent = aClass.isAnnotationPresent(NeedSecret.class);
             if(!annotationPresent){
                 invocation.proceed();
@@ -85,7 +92,5 @@ public class ParameterMapperPojo implements Interceptor {
     public void setProperties(Properties properties) {
 
     }
-
-
 
 }

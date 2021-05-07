@@ -6,12 +6,13 @@
 		就可以直接填写缩写，不区分大小写，直接通过方法名去找类型-->
 <mapper namespace="com.server.dao.MapperPojoMapper">
 
-    <insert id="insert" parameterType="com.server.config.mybatisecret.MapperPojo">
+    <insert id="insert" parameterType="com.server.config.mybatisecret.MapperPojo" >
         insert into a_mapperpojo
                 (id, name, remark, address)
         values
                 (#{id}, #{name}, #{remark}, #{address})
     </insert>
+
 
     <select id="findAll" resultType="com.server.config.mybatisecret.MapperPojo">
         SELECT * FROM a_mapperpojo
