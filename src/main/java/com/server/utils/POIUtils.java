@@ -24,20 +24,25 @@ public class POIUtils<T> {
         if(listSize > 10000){
             int j = listSize / 10000;
             for (int i = 0; i < j; i++) {
-                create(list, hssfWorkbook, i, sheetName, orderList);
+                create(list, hssfWorkbook, i, sheetName, orderList, 10000);
             }
         }else{
-            create(list, hssfWorkbook, 0, sheetName, orderList);
+            create(list, hssfWorkbook, 0, sheetName, orderList, listSize);
         }
         FileOutputStream out = new FileOutputStream(path);
         hssfWorkbook.write(out);
         out.close();
     }
 
-    private void create(List<T> list, HSSFWorkbook hssfWorkbook, int index ,String sheetName, List<Field> orderList){
+    /**
+     *
+     * @param multiple  每页放多少数据
+     *                   每页打算放10000条，就直接写10000，查询数据量小于10000，直接写查询出的数量
+     */
+    private void create(List<T> list, HSSFWorkbook hssfWorkbook, int index ,String sheetName, List<Field> orderList, int multiple){
         HSSFSheet sheet = hssfWorkbook.createSheet();
         createHeader(sheet, orderList);
-        createContent(sheet, list, index, orderList);
+        createContent(sheet, list, index, orderList, multiple);
         hssfWorkbook.setSheetName(index,sheetName + index);
     }
 
@@ -50,13 +55,13 @@ public class POIUtils<T> {
         }
     }
 
-    private void createContent(HSSFSheet sheet, List<T> list,int index, List<Field> orderList){
+    private void createContent(HSSFSheet sheet, List<T> list,int index, List<Field> orderList, int multiple){
         List<String> list1 = new LinkedList<>();
         for(Field field:orderList){
             list1.add(field.getName());
         }
         int j = 0;
-        for (int i = index * 10000; i < (index + 1) * 10000; i++) {
+        for (int i = index * multiple; i < (index + 1) * multiple; i++) {
             HSSFRow row = sheet.createRow(j+1);
             Field[] fields = list.get(i).getClass().getDeclaredFields();
             Object poi = list.get(i);

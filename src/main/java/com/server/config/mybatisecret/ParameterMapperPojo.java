@@ -51,7 +51,16 @@ public class ParameterMapperPojo implements Interceptor {
         Field parameterObject = parameterHandler.getClass().getDeclaredField("parameterObject");
 
         parameterObject.setAccessible(true);
-        //get方法是返回参数对象的值
+        /*
+            获取的是parameterObject的类型 ，
+            @Param("id") Integer  id---> o == Map 类型
+            @Param("pojo") Pojo pojo ---> o == Pojo 实体类型
+            所以 o != null 判断之后的操作，只能对实体插入起作用，
+            比方update方法，只更改一个字段的话，我们可能就无法加密字段了
+            ex: 更新某个字段值
+              int updatePojo(@Param("name") String name, @Param("id") Long id)   --->这里需要了解mybatis源码@Param转化
+              这个时候的 Object o的类型就是map,所以后续逻辑走不到
+         */
         Object o = parameterObject.get(parameterHandler);
         if(o != null){
             Class<?> aClass = o.getClass();  //获取参数类型 --> 实体类型MapperPojo
@@ -92,5 +101,6 @@ public class ParameterMapperPojo implements Interceptor {
     public void setProperties(Properties properties) {
 
     }
+
 
 }
