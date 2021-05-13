@@ -25,6 +25,7 @@ public class Student {
     }
 
     public static class StudentBuilder {
+
         private String name;
 
         private String address;

@@ -68,6 +68,7 @@ public class AllInterceptor implements HandlerInterceptor {
     }
 
     /**
+     * 注解方式(要写在拦截器中，因为拦截器在前)
      * 标注 @SkipTokenOauth 可以直接跳过token认证
      */
     public boolean skipTokenOauth(Object handler){
