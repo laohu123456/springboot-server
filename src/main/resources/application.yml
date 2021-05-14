@@ -30,7 +30,7 @@ spring:
         max-active: 200
         max-wait: -1
         max-idle: 60
-        min-idle: 0
+        min-idle: 30
     lettuce:
       shutdown-timeout: 10000
 mybatis:

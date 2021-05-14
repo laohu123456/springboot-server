@@ -21,6 +21,9 @@ public final class CommonConstant {
     //存放不用token就可以访问的路径
     private final static String NOT_LOGIN_ALLOW_PATH = "NOT_LOGIN_ALLOW_PATH_INTERCEPTOR";
 
+
+    private final static String REDIS_KEY_EVENT_EXPIRE = "__keyevent@0__:expired";
+
     public static Long getLoginJwtExpireTime() {
         return LOGIN_JWT_EXPIRE_TIME;
     }
@@ -43,5 +46,9 @@ public final class CommonConstant {
 
     public static String getSendEmailAdminPassword() {
         return SEND_EMAIL_ADMIN_PASSWORD;
+    }
+
+    public static String getRedisKeyEventExpire() {
+        return REDIS_KEY_EVENT_EXPIRE;
     }
 }
