@@ -14,7 +14,7 @@ public class JedisConfig {
        return jedisPool.getResource();
     }
 
-    public GenericObjectPoolConfig setConfig(){
+    private GenericObjectPoolConfig setConfig(){
         GenericObjectPoolConfig conf = new GenericObjectPoolConfig();
         conf.setMaxTotal(20);
         conf.setMaxIdle(20);

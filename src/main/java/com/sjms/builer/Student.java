@@ -9,7 +9,7 @@ public class Student {
 
     private Integer age;
 
-    public Student(StudentBuilder studentBuilder) {
+    private Student(StudentBuilder studentBuilder) {
         this.name = studentBuilder.name;
         this.address = studentBuilder.address;
         this.age = studentBuilder.age;

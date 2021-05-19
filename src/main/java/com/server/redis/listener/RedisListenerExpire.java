@@ -1,15 +1,11 @@
 package com.server.redis.listener;
 
-import com.server.utils.SerializationUtils;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RedisListenerExpire implements MessageListener {
-
-
-
 
     /**
      * 开启过期Key监听， 需要配置
@@ -21,11 +17,14 @@ public class RedisListenerExpire implements MessageListener {
     /**
      *
      * @param message  过期的key
+     *   监听订单到期未提交，进行删除订单操作
      */
     @Override
     public void onMessage(Message message, byte[] pattern) {
-        Object deserialize = SerializationUtils.deserialize(message.getBody());
-        System.out.println(String.valueOf(deserialize));
+        //Object deserialize = SerializationUtils.deserialize(message.getBody());
+        //String value = String.valueOf(deserialize);
+        String value = new String(message.getBody());
+        System.out.println(value);
     }
 
 
