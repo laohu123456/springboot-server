@@ -22,6 +22,9 @@ public class SendExpireEvent {
 
     @Scheduled(fixedDelay = 1000)
     public void sendExpireEvent(){
+     //   setExpireMethod();
+    }
+    private void setExpireMethod(){
         Random random = new Random();
         int randomNum = random.nextInt(25);
         String randomStr = DX_ZM[randomNum];

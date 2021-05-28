@@ -24,6 +24,9 @@ public final class CommonConstant {
 
     private final static String REDIS_KEY_EVENT_EXPIRE = "__keyevent@0__:expired";
 
+
+    private final static String REDIS_LOGIN_USER_NAME = "REDIS:LOGIN:USER:NAME:";
+
     public static Long getLoginJwtExpireTime() {
         return LOGIN_JWT_EXPIRE_TIME;
     }
@@ -50,5 +53,9 @@ public final class CommonConstant {
 
     public static String getRedisKeyEventExpire() {
         return REDIS_KEY_EVENT_EXPIRE;
+    }
+
+    public static String getRedisLoginUserName() {
+        return REDIS_LOGIN_USER_NAME;
     }
 }

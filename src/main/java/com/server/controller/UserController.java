@@ -1,5 +1,6 @@
 package com.server.controller;
 
+import com.server.annotation.SkipTokenOauth;
 import com.server.annotation.comoutingtime.CountTime;
 import com.server.dao.UserMapper;
 import com.server.entity.ExceptionEntity;
@@ -23,7 +24,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
+    @SkipTokenOauth
     @CountTime
     @RequestMapping(value = "login")
     public Map<String, Object> userLogin(@RequestParam(value = "user_name") String user_name,

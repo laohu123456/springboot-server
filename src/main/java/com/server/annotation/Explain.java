@@ -3,7 +3,7 @@ package com.server.annotation;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class explain {
+public class Explain {
 
 
     /**

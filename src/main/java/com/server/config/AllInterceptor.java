@@ -36,6 +36,10 @@ public class AllInterceptor implements HandlerInterceptor {
         if (allow) {
             return true;
         }
+        boolean ifAllowAccess = skipTokenOauth(handler);
+        if(ifAllowAccess){
+            return true;
+        }
         String token = request.getHeader(JwtUtils.TOKEN_HEADER);
         ExceptionEntity exceptionEntity = userService.oauthUser(token);
         if(exceptionEntity.getStatus() == 400){

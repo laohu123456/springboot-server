@@ -10,8 +10,6 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,7 +21,7 @@ public class POIUtils<T> {
         int listSize = list.size();
         if(listSize > 10000){
             int j = listSize / 10000;
-            for (int i = 0; i < j; i++) {
+            for (int i = 0; i < (j + 1); i++) {
                 create(list, hssfWorkbook, i, sheetName, orderList, 10000);
             }
         }else{
@@ -89,7 +87,7 @@ public class POIUtils<T> {
         sheet.addMergedRegion(region);
     }
 
-    public static void main(String[] args) throws ClassNotFoundException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+/*    public static void main(String[] args) throws ClassNotFoundException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
         Class<?> aClass = Class.forName("com.server.entity.User");
         Field a = aClass.getDeclaredField("userId");
         Object o = aClass.newInstance();
@@ -99,6 +97,12 @@ public class POIUtils<T> {
         Method getUserId = aClass.getDeclaredMethod("getUserId", null);
         Object invoke = getUserId.invoke(o, null);
         System.out.println(invoke);
+    }*/
+
+    public static void main(String[] args) {
+        int j = 26865 / 10000;
+
+        System.out.println(j);
     }
 
 

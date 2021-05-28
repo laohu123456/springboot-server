@@ -35,18 +35,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map<String, Object> findUserByNameAndPasswd(String user_name, String user_password) {
         Map<String, Object> map = new HashMap<>();
+        /*ifLoginByUserName(user_name, user_password, map);
+        if(map.get("code").equals("00")){
+
+        }*/
         User user = userMapper.findUserByName(user_name);
         if (user == null) {
             map.put("code", "-1");
             map.put("message", "用户名不存在");
         } else {
             if (user.getPassWord().equals(user_password)) {
-                String token = JwtUtils.createJWT(user.getUserId());
-                map.put("code", "200");
-                map.put("titck", JwtUtils.TOKEN_PREFIX + token);
-                map.put("message", "登录成功");
-                String key = GetRedisKey.getLoginJwtTime(user.getUserId());
-                redisStringService.expire(key, token, CommonConstant.getLoginJwtExpireTime());
+                loginsucess(user, map);
             } else {
                 String key = GetRedisKey.getLoginErrorSeconds(user.getUserId());
                 redisStringService.increNum(key);
@@ -55,6 +54,31 @@ public class UserServiceImpl implements UserService {
             }
         }
         return map;
+    }
+
+    private void loginsucess(User user, Map<String, Object> map){
+        String token = JwtUtils.createJWT(user.getUserId());
+        map.put("code", "200");
+        map.put("titck", JwtUtils.TOKEN_PREFIX + token);
+        map.put("message", "登录成功");
+        String key = GetRedisKey.getLoginJwtTime(user.getUserId());
+        redisStringService.expire(key, token, CommonConstant.getLoginJwtExpireTime());
+    }
+
+    private void ifLoginByUserName(String user_name, String user_password, Map<String, Object> map) {
+        String key = CommonConstant.getRedisLoginUserName() + user_name;
+        boolean exist = redisStringService.exist(key);
+        redisStringService.expire(key, user_password, CommonConstant.getLoginJwtExpireTime());
+        if(!exist){
+            map.put("code", "-1");
+            return ;
+        }
+        String password  = String.valueOf(redisStringService.get(key));
+        if (!user_password.equals(password)) {
+            map.put("code", "-1");
+            return ;
+        }
+        map.put("code", "00");
     }
 
     @Override

@@ -12,6 +12,10 @@ public class RedisListenerExpire implements MessageListener {
      * notify-keyspace-events Ex “ex”是事件标志，“”代表禁用
      * psubscribe 订阅频道 __keyevent@0__:expired
      * 并非key过期事件就触发，多少比到期时间慢点(key过期在前,触发事件在后，并非同一时刻)
+     *
+     * ex: del key
+     * __keyevent@0__:expired  ---> key(得到的通知是key)
+     * __keyspace@0__:expired  ---> del(得到的通知是事件类型del)
      */
 
     /**
@@ -26,6 +30,5 @@ public class RedisListenerExpire implements MessageListener {
         String value = new String(message.getBody());
         System.out.println(value);
     }
-
 
 }
