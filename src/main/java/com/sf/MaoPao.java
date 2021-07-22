@@ -58,4 +58,54 @@ public class MaoPao {
         return -1;
     }
 
+    /**
+     * 插入排序
+     * 默认从第二数据开始,
+     * 如果第二个数据比第一个数据小，则进行交换，在和第三个数进行比较，如果比前的数字小则插入，否则，退出
+     * @param array
+     * @return
+     */
+    public static int[] charupaixu(int[] array){
+        for (int i = 1; i < array.length; i++) {
+            for (int j = i ; j > 0 ; j--) {
+                if(array[j] < array[j-1]){
+                    int temp = array[j];
+                    array[j] = array[j-1];
+                    array[j-1] = temp;
+                }else{
+                    break;
+                }
+
+            }
+        }
+        return array;
+    }
+
+
+    /**
+     * 选择排序
+     * 假定第一个数字最小，然后标记一下最小数字的索引
+     * 那第一个数字和后面的数字逐个进行比较，找出最小的数字的索引,比较两次索引是否相等
+     * 不相等则对两个索引的数字进行交换，反之，则不管
+     * @param array
+     * @return
+     */
+    public static int[] xuanzepaixu(int[] array){
+        for (int i = 0; i < array.length; i++) {
+            int min = i;
+
+            for (int j = i + 1; j < array.length ; j++) {
+                if(array[min] > array[j]){
+                    min = j;
+                }
+            }
+            if(min != i){
+                int temp = array[min];
+                array[min] = array[i];
+                array[i] = temp;
+            }
+        }
+        return array;
+    }
+
 }
